@@ -8,14 +8,10 @@ const petfinder = pf({
 });
 
 class Details extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: true,
-      error: ""
-    };
-  }
+  state = {
+    loading: true,
+    error: ""
+  };
 
   componentDidMount() {
     petfinder.pet
