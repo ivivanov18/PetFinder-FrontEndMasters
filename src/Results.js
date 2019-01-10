@@ -1,6 +1,7 @@
 import React from "react";
 import pf from "petfinder-client";
 import Pet from "./Pet";
+import SearchBox from "./SearchBox";
 
 const petfinder = pf({
   key: process.env.API_KEY,
@@ -45,7 +46,8 @@ class Results extends React.Component {
     //   React.createElement(Pet, { name: "Toto", type: "Dog", breed: "Dingo" })
     // ]);
     return (
-      <div>
+      <div className="search">
+        <SearchBox />
         {this.state.pets.map(pet => {
           const breed = Array.isArray(pet.breeds.breed)
             ? pet.breeds.breed.join(", ")
