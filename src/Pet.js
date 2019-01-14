@@ -9,11 +9,11 @@ class Pet extends React.Component {
       photos = media.photos.photo.filter(photo => photo["@size"] === "pn");
     }
 
-    let hero = "http://placecorgi.com/300/300";
-    if (photos[0] && photos[0].value) {
-      hero = photos[0].value;
-    }
-
+    // let hero = "http://placecorgi.com/300/300";
+    // if (photos[0] && photos[0].value) {
+    //   hero = photos[0].value;
+    // }
+    const hero = photos[0] ? photos[0].value : "http://placecorgi.com/300/300";
     return (
       <Link to={`/details/${id}`} className="pet">
         <div className="image-container">

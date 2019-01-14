@@ -1,11 +1,12 @@
 import React from "react";
 
 import SearchBox from "./SearchBox";
+import { navigate } from "@reach/router";
 
 const SearchParams = () => {
   return (
     <div>
-      <SearchBox />
+      <SearchBox search={() => navigate("/")} />
     </div>
   );
 };

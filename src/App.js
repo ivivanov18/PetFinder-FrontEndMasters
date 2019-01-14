@@ -7,6 +7,7 @@ import Results from "./Results";
 import Details from "./Details";
 import SearchParams from "./SearchParams";
 import { Provider } from "./SearchContext";
+import Navbar from "./Navbar";
 
 const petfinder = pf({
   key: process.env.API_KEY,
@@ -72,9 +73,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <header>
-          <Link to="/">Adopt me!</Link>
-        </header>
+        <Navbar />
         <Provider value={this.state}>
           <Router>
             <Results path="/" />
