@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import pf from "petfinder-client";
 import { navigate } from "@reach/router/lib/history";
 import Carousel from "./Carousel";
+import Modal from "./Modal";
 
 const petfinder = pf({
   key: process.env.API_KEY,
@@ -11,7 +12,8 @@ const petfinder = pf({
 class Details extends Component {
   state = {
     loading: true,
-    error: ""
+    error: "",
+    showModal: false
   };
 
   componentDidMount() {
@@ -44,6 +46,9 @@ class Details extends Component {
       });
   }
 
+  toggleModal = () => {
+    this.setState({ showModal: !this.state.showModal });
+  };
   render() {
     if (this.state.loading) {
       return <h1>loading...</h1>;
@@ -60,6 +65,16 @@ class Details extends Component {
             {animal} - {breed} - {location}
           </h2>
           <p>{description}</p>
+          <button onClick={this.toggleModal}> Adopt {name}?</button>
+          {this.state.showModal ? (
+            <Modal>
+              <h1>Would like to adopt ${name}?</h1>
+              <div className="buttons">
+                <button onClick={this.toggleModal}>Yes</button>
+                <button onClick={this.toggleModal}>No</button>
+              </div>
+            </Modal>
+          ) : null}
         </div>
       </div>
     );
