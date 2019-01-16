@@ -3,6 +3,7 @@ import pf from "petfinder-client";
 import Pet from "./Pet";
 import SearchBox from "./SearchBox";
 import { Consumer } from "./SearchContext";
+import { connect } from "react-redux";
 
 const petfinder = pf({
   key: process.env.API_KEY,
@@ -21,7 +22,9 @@ class Results extends React.Component {
   }
 
   search = () => {
-    const { location, animal, breed } = this.props.searchParams;
+    const { animal, breed } = this.props.searchParams;
+    const { location } = this.props;
+
     petfinder.pet
       .find({
         output: "full",
@@ -79,10 +82,16 @@ class Results extends React.Component {
   }
 }
 
-export default function ResultsWithContext(props) {
+// Toutes les fois ou on appelle est fait dans la methode render
+// Afin de pouvoir acceder au state du contexte, on exporte
+function ResultsWithContext(props) {
   return (
     <Consumer>
       {context => <Results {...props} searchParams={context} />}
     </Consumer>
   );
 }
+
+const mapStateToProps = ({ location }) => ({ location });
+
+export default connect(mapStateToProps)(ResultsWithContext);
