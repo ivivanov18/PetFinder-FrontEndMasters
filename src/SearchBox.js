@@ -1,8 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import { ANIMALS } from "petfinder-client";
 
-import { Consumer } from "./SearchContext";
+import getBreeds from "./actions/getBreeds";
+import changeLocation from "./actions/changeLocation";
+import changeAnimal from "./actions/changeAnimal";
+import changeBreed from "./actions/changeBreed";
 
 class SearchBox extends Component {
   state = {
@@ -20,63 +24,83 @@ class SearchBox extends Component {
 
   render() {
     return (
-      <Consumer>
-        {context => (
-          <div className="search-params">
-            <form onSubmit={this.handleFormSubmit}>
-              <label htmlFor="location">
-                Location
-                <input
-                  onChange={context.handleLocationChange}
-                  id="location"
-                  value={context.location}
-                  placeholder="Location"
-                />
-              </label>
+      <div className="search-params">
+        <form onSubmit={this.handleFormSubmit}>
+          <label htmlFor="location">
+            Location
+            <input
+              onChange={this.props.handleLocationChange}
+              id="location"
+              value={this.props.location}
+              placeholder="Location"
+            />
+          </label>
 
-              <label htmlFor="animal">
-                Animal
-                <select
-                  id="animal"
-                  value={context.animal}
-                  onChange={context.handleAnimalChange}
-                  onBlur={context.handleAnimalChange}
-                >
-                  <option />
-                  {ANIMALS.map(animal => {
-                    return (
-                      <option key={animal} value={animal}>
-                        {animal}
-                      </option>
-                    );
-                  })}
-                </select>
-              </label>
-              <label htmlFor="breed">
-                Breed
-                <select
-                  id="breed"
-                  value={context.breed}
-                  onChange={context.handleBreedChange}
-                  onBlur={context.handleBreedChange}
-                  disabled={!context.breeds.length}
-                >
-                  <option />
-                  {context.breeds.map(breed => {
-                    return (
-                      <option key={breed} value={breed}>
-                        {breed}
-                      </option>
-                    );
-                  })}
-                </select>
-              </label>
-              <button>Submit</button>
-            </form>
-          </div>
-        )}
-      </Consumer>
+          <label htmlFor="animal">
+            Animal
+            <select
+              id="animal"
+              value={this.props.animal}
+              onChange={this.props.handleAnimalChange}
+              onBlur={this.props.handleAnimalChange}
+            >
+              <option />
+              {ANIMALS.map(animal => {
+                return (
+                  <option key={animal} value={animal}>
+                    {animal}
+                  </option>
+                );
+              })}
+            </select>
+          </label>
+          <label htmlFor="breed">
+            Breed
+            <select
+              id="breed"
+              value={this.props.breed}
+              onChange={this.props.handleBreedChange}
+              onBlur={this.props.handleBreedChange}
+              disabled={!this.props.breeds.length}
+            >
+              <option />
+              {this.props.breeds.map(breed => {
+                return (
+                  <option key={breed} value={breed}>
+                    {breed}
+                  </option>
+                );
+              })}
+            </select>
+          </label>
+          <button>Submit</button>
+        </form>
+      </div>
     );
   }
 }
-export default SearchBox;
+
+const mapStateToProps = ({ animal, breed, location, breeds }) => ({
+  animal,
+  breed,
+  location,
+  breeds
+});
+
+const mapDispatchToProps = dispatch => ({
+  handleAnimalChange(event) {
+    dispatch(changeAnimal(event.target.value));
+    dispatch(getBreeds());
+  },
+  handleBreedChange(event) {
+    dispatch(changeBreed(event.target.value));
+  },
+  handleLocationChange(event) {
+    dispatch(changeLocation(event.target.value));
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchBox);
